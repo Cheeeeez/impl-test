@@ -15,11 +15,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/login', function () {
     return view('login');
+})->name('login');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/', function () {
+        return view('home');
+    });
 });
 
-Route::get('/', function () {
-    return view('home');
-});
-
-Route::get('login/github', 'GithubAuthController@redirectLogin')->name('login');
+Route::get('login/github', 'GithubAuthController@redirectLogin');
 Route::get('callback/github', 'GithubAuthController@handleCallback');

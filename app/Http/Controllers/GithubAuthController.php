@@ -20,7 +20,6 @@ class GithubAuthController extends Controller
     {
         try {
             $user = Socialite::driver(static::SERVICE)->user();
-            // dd($user);
             $userDB = User::query()->where('email', $user->getEmail())->first();
 
             if (empty($userDB)) {
