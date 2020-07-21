@@ -29,6 +29,7 @@ class UserService
             $userDB = new User();
             $userDB->name = $user->getNickname();
             $userDB->email = $user->getEmail();
+            $userDB->avatar = $user->getAvatar();
             if (!$userDB->save()) {
                 throw new \Exception('Create user failed due to DB Error...');
             }
