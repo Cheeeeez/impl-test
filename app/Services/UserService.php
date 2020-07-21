@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Repositories\UserRepository;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
@@ -9,7 +10,12 @@ use Laravel\Socialite\Facades\Socialite;
 class UserService
 {
     const SERVICE = "github";
+    protected $userRepository;
 
+    public function __construct(UserRepository $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
     public function redirectLoginGithub()
     {
         return Socialite::driver(static::SERVICE)->redirect();
@@ -18,8 +24,7 @@ class UserService
     public function createOrGetUser()
     {
         $user = Socialite::driver(static::SERVICE)->user();
-        $userDB = User::query()->where('email', $user->getEmail())->first();
-
+        $userDB = $this->userRepository->findByEmail($user->getEmail());
         if (empty($userDB)) {
             $userDB = new User();
             $userDB->name = $user->getNickname();

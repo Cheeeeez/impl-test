@@ -23,5 +23,6 @@ Route::middleware('auth')->group(function () {
     });
 });
 
-Route::get('login/github', 'GithubAuthController@redirectLogin');
-Route::get('callback/github', 'GithubAuthController@handleCallback');
+Route::get('/login/github', 'GithubAuthController@redirectLogin');
+Route::get('/callback/github', 'GithubAuthController@handleCallback');
+Route::get('/logout', 'GithubAuthController@logout')->name('logout');

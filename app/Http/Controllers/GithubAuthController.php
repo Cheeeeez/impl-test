@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\UserService;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 
 class GithubAuthController extends Controller
@@ -33,5 +34,11 @@ class GithubAuthController extends Controller
                 ->to('/')
                 ->with('error', 'Login via Github failed. Please try again');
         }
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+        return redirect()->route('login');
     }
 }
