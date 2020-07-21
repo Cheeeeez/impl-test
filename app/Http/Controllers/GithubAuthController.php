@@ -2,35 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\UserService;
 use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 
 class GithubAuthController extends Controller
 {
-    const SERVICE = "github";
+    protected $userService;
+
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
 
     public function redirectLogin()
     {
-        return Socialite::driver(static::SERVICE)->redirect();
+        return $this->userService->redirectLoginGithub();
     }
 
     public function handleCallback()
     {
         try {
-            $user = Socialite::driver(static::SERVICE)->user();
-            $userDB = User::query()->where('email', $user->getEmail())->first();
-
-            if (empty($userDB)) {
-                $userDB = new User();
-                $userDB->name = $user->getNickname();
-                $userDB->email = $user->getEmail();
-                if (!$userDB->save()) {
-                    throw new \Exception('Create user failed due to DB Error...');
-                }
-            }
-            Auth::loginUsingId($userDB->id);
+            $this->userService->createOrGetUser();
             return redirect()
                 ->to('/')
                 ->with('success', 'Login successfully!');
