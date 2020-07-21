@@ -8,14 +8,9 @@
                     Sign In With
                 </span>
 
-                <a href="#" class="btn-face m-b-20">
-                    <i class="fa fa-facebook-official"></i>
-                    Facebook
-                </a>
-
-                <a href="#" class="btn-google m-b-20">
-                    <img src="images/icons/icon-google.png" alt="GOOGLE">
-                    Google
+                <a href="{{ route('login') }}" style="width: 440px" class="btn-google m-b-20">
+                    <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GITHUB">
+                    Github
                 </a>
 
                 <div class="p-t-31 p-b-9">
@@ -23,8 +18,8 @@
                         Username
                     </span>
                 </div>
-                <div class="wrap-input100 validate-input" data-validate = "Username is required">
-                    <input class="input100" type="text" name="username" >
+                <div class="wrap-input100 validate-input" data-validate="Username is required">
+                    <input class="input100" type="text" name="username">
                     <span class="focus-input100"></span>
                 </div>
 
@@ -37,8 +32,8 @@
                         Forgot?
                     </a>
                 </div>
-                <div class="wrap-input100 validate-input" data-validate = "Password is required">
-                    <input class="input100" type="password" name="pass" >
+                <div class="wrap-input100 validate-input" data-validate="Password is required">
+                    <input class="input100" type="password" name="pass">
                     <span class="focus-input100"></span>
                 </div>
 
