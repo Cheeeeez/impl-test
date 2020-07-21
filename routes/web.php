@@ -19,7 +19,7 @@ Route::get('/login', function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/', function () {
-        return view('home');
+        return view('home.dashboard');
     });
 });
 
