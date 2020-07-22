@@ -2,6 +2,7 @@ const MAX_REPO = 30;
 const FIRST_PAGE = 1;
 var page = FIRST_PAGE;
 var remainPage = 0;
+var totalRepo = 0;
 $("#table").hide();
 $("#load-more").hide();
 let html = document.getElementById("table-content");
@@ -20,19 +21,38 @@ $(document).ready(function () {
                 "/repos?sort=created&direction=asc;per_page=100",
             dataType: "JSON",
             success: function (response) {
+                totalRepo = response.length;
                 html.innerHTML = "";
                 remainPage = response.length - MAX_REPO;
                 console.log(response);
                 $("#user-information").hide();
                 $("#table").show();
-                for (let i = 0; i < MAX_REPO; i++) {
-                    html.innerHTML += `<tr>
+                if (response <= MAX_REPO) {
+                    for (let i = 0; i < response.length; i++) {
+                        html.innerHTML += `<tr>
                         <td>${i + 1}</td>
                         <td>${response[i].name}</td>
                         <td><a target="_blank" href="${response[i].html_url}">${
-                        response[i].html_url
-                    }</a></td>
-                    </tr>`;
+                            response[i].html_url
+                        }</a></td>
+                        </tr>`;
+                    }
+                    $("#repo").html(function () {
+                        return response.length + "/" + response.length;
+                    });
+                } else {
+                    for (let i = 0; i < MAX_REPO; i++) {
+                        html.innerHTML += `<tr>
+                        <td>${i + 1}</td>
+                        <td>${response[i].name}</td>
+                        <td><a target="_blank" href="${response[i].html_url}">${
+                            response[i].html_url
+                        }</a></td>
+                        </tr>`;
+                    }
+                    $("#repo").html(function () {
+                        return MAX_REPO + "/" + response.length;
+                    });
                 }
                 if (response.length > MAX_REPO) {
                     $("#load-more").show();
@@ -65,6 +85,14 @@ $(document).ready(function () {
                     }</a></td>
                     </tr>`;
                 }
+                $("#repo").html(function () {
+                    return (
+                        MAX_REPO * (page - 1) +
+                        response.length +
+                        "/" +
+                        totalRepo
+                    );
+                });
                 if (response.length < remainPage) {
                     $("#load-more").show();
                 } else {

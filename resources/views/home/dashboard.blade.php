@@ -116,6 +116,11 @@
                     </thead>
                     <tbody id="table-content"></tbody>
                 </table>
+                <div class="row">
+                    <div class="col-md-1 mr-0 ml-auto text-right">
+                        <span id="repo"></span>
+                    </div>
+                </div>
                 <div class="row justify-content-center">
                     <button class="btn btn-primary" id="load-more">Load more</button>
                 </div>
