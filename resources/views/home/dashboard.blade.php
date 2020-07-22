@@ -7,10 +7,10 @@
     <!-- Navbar Search-->
     <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
         <div class="input-group">
-            <input class="form-control" type="text" placeholder="Search for..." aria-label="Search"
+            <input class="form-control" type="text" id="keyword" placeholder="Search for..." aria-label="Search"
                 aria-describedby="basic-addon2" />
             <div class="input-group-append">
-                <button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button>
+                <button class="btn btn-primary" id="search" type="button"><i class="fas fa-search"></i></button>
             </div>
         </div>
     </form>
@@ -35,7 +35,7 @@
             <div class="sb-sidenav-menu">
                 <div class="nav">
                     <div class="sb-sidenav-menu-heading">Core</div>
-                    <a class="nav-link" href="index.html">
+                    <a class="nav-link" href="{{ route('home') }}">
                         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                         Dashboard
                     </a>
@@ -92,27 +92,33 @@
                             </div>
                         </nav>
                     </div>
-                    <div class="sb-sidenav-menu-heading">Addons</div>
-                    <a class="nav-link" href="charts.html">
-                        <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                        Charts
-                    </a>
-                    <a class="nav-link" href="tables.html">
-                        <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                        Tables
-                    </a>
                 </div>
             </div>
         </nav>
     </div>
     <div id="layoutSidenav_content">
         <main>
-            <div class="container-fluid">
-                <h1 class="mt-4">User information:</h1>
-                <ul>
-                    <li>Name: {{Auth::user()->name}}</li>
-                    <li>Email: {{Auth::user()->email}}</li>
-                </ul>
+            <div class="container-fluid mt-4">
+                <div id="user-information">
+                    <h1>User information:</h1>
+                    <ul>
+                        <li>Name: {{Auth::user()->name}}</li>
+                        <li>Email: {{Auth::user()->email}}</li>
+                    </ul>
+                </div>
+                <table class="table" id="table">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Repository name</th>
+                            <th scope="col">Url</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-content"></tbody>
+                </table>
+                <div class="row justify-content-center">
+                    <button class="btn btn-primary" id="load-more">Load more</button>
+                </div>
             </div>
         </main>
         <footer class="py-4 bg-light mt-auto">

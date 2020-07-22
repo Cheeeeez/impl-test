@@ -20,7 +20,7 @@ Route::get('/login', function () {
 Route::middleware('auth')->group(function () {
     Route::get('/', function () {
         return view('home.dashboard');
-    });
+    })->name('home');
 });
 
 Route::get('/login/github', 'GithubAuthController@redirectLogin');
