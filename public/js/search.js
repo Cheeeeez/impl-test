@@ -1,18 +1,18 @@
-const MAX_REPO = 30;
+const MAX_REPO_PER_PAGE = 30;
 const FIRST_PAGE = 1;
-var page = FIRST_PAGE;
-var remainPage = 0;
-var totalRepo = 0;
+let page = FIRST_PAGE;
+var loadedRepo = 0;
+let totalRepo = 0;
 $("#table").hide();
 $("#load-more").hide();
-let html = document.getElementById("table-content");
+let table = document.getElementById("table-content");
 $(document).ready(function () {
     $("form").submit(function (e) {
         e.preventDefault();
     });
     $("#search").click(function () {
         page = FIRST_PAGE;
-        remainPage = 0;
+        loadedRepo = 0;
         $.ajax({
             type: "GET",
             url:
@@ -20,45 +20,79 @@ $(document).ready(function () {
                 $("#keyword").val() +
                 "/repos?sort=created&direction=asc;per_page=100",
             dataType: "JSON",
-            success: function (response) {
+            success: function (response, textStatus, xhr) {
                 totalRepo = response.length;
-                html.innerHTML = "";
-                remainPage = response.length - MAX_REPO;
-                console.log(response);
+                table.innerHTML = "";
                 $("#user-information").hide();
                 $("#table").show();
-                if (response <= MAX_REPO) {
-                    for (let i = 0; i < response.length; i++) {
-                        html.innerHTML += `<tr>
+                if (xhr.getResponseHeader("link")) {
+                    let linkHeader = xhr.getResponseHeader("link");
+                    let newLinkHeader = linkHeader.replace(/<|>/g, "");
+                    let array = newLinkHeader.split(",");
+                    let lastPageUrl = array[array.length - 1];
+                    for (let i = 0; i < lastPageUrl.length; i++) {
+                        if (lastPageUrl[i] == ";") {
+                            lastPage = lastPageUrl[i - 1];
+                            break;
+                        }
+                    }
+                    $.ajax({
+                        type: "GET",
+                        url: lastPageUrl,
+                        dataType: "JSON",
+                        success: function (result) {
+                            totalRepo = 100 * (lastPage - 1) + result.length;
+                            localStorage.setItem("repo", totalRepo);
+                        },
+                    });
+                    totalRepo = localStorage.getItem("repo");
+                    localStorage.clear();
+                    loadedRepo = MAX_REPO_PER_PAGE;
+                    for (let i = 0; i < MAX_REPO_PER_PAGE; i++) {
+                        table.innerHTML += `<tr>
                         <td>${i + 1}</td>
-                        <td>${response[i].name}</td>
+                        <td>${response[i].name} (${
+                            response[i].stargazers_count
+                        }<i class="fas fa-star"></i>)</td>
                         <td><a target="_blank" href="${response[i].html_url}">${
                             response[i].html_url
                         }</a></td>
                         </tr>`;
                     }
-                    $("#repo").html(function () {
-                        return response.length + "/" + response.length;
-                    });
+                    showLoadedReposAndTotalRepos(loadedRepo, totalRepo);
                 } else {
-                    for (let i = 0; i < MAX_REPO; i++) {
-                        html.innerHTML += `<tr>
-                        <td>${i + 1}</td>
-                        <td>${response[i].name}</td>
-                        <td><a target="_blank" href="${response[i].html_url}">${
-                            response[i].html_url
-                        }</a></td>
-                        </tr>`;
+                    if (response.length <= MAX_REPO_PER_PAGE) {
+                        loadedRepo = response.length;
+                        for (let i = 0; i < response.length; i++) {
+                            table.innerHTML += `<tr>
+                            <td>${i + 1}</td>
+                            <td>${response[i].name} (${
+                                response[i].stargazers_count
+                            }<i class="fas fa-star"></i>)</td>
+                            <td><a target="_blank" href="${
+                                response[i].html_url
+                            }">${response[i].html_url}</a></td>
+                            </tr>`;
+                        }
+                        showLoadedReposAndTotalRepos(loadedRepo, totalRepo);
+                    } else {
+                        totalRepo = response.length;
+                        loadedRepo = MAX_REPO_PER_PAGE;
+                        for (let i = 0; i < MAX_REPO_PER_PAGE; i++) {
+                            table.innerHTML += `<tr>
+                            <td>${i + 1}</td>
+                            <td>${response[i].name} (${
+                                response[i].stargazers_count
+                            }<i class="fas fa-star"></i>)</td>
+                            <td><a target="_blank" href="${
+                                response[i].html_url
+                            }">${response[i].html_url}</a></td>
+                            </tr>`;
+                        }
+                        showLoadedReposAndTotalRepos(loadedRepo, totalRepo);
                     }
-                    $("#repo").html(function () {
-                        return MAX_REPO + "/" + response.length;
-                    });
                 }
-                if (response.length > MAX_REPO) {
-                    $("#load-more").show();
-                } else {
-                    $("#load-more").hide();
-                }
+                showOrHideLoadMoreButton(loadedRepo, totalRepo);
             },
         });
     });
@@ -73,33 +107,38 @@ $(document).ready(function () {
                 "/repos?sort=created&direction=asc;page=" +
                 page +
                 "&per_page=" +
-                MAX_REPO,
+                MAX_REPO_PER_PAGE,
             dataType: "JSON",
             success: function (response) {
                 for (let i = 0; i < response.length; i++) {
-                    html.innerHTML += `<tr>
-                        <td>${(page - 1) * MAX_REPO + i + 1}</td>
-                        <td>${response[i].name}</td>
+                    table.innerHTML += `<tr>
+                        <td>${loadedRepo + i + 1}</td>
+                        <td>${response[i].name} (${
+                        response[i].stargazers_count
+                    }<i class="fas fa-star"></i>)</td>
                         <td><a target="_blank" href="${response[i].html_url}">${
                         response[i].html_url
                     }</a></td>
                     </tr>`;
                 }
-                $("#repo").html(function () {
-                    return (
-                        MAX_REPO * (page - 1) +
-                        response.length +
-                        "/" +
-                        totalRepo
-                    );
-                });
-                if (response.length < remainPage) {
-                    $("#load-more").show();
-                } else {
-                    $("#load-more").hide();
-                }
-                remainPage -= response.length;
+                loadedRepo += response.length;
+                showLoadedReposAndTotalRepos(loadedRepo, totalRepo);
+                showOrHideLoadMoreButton(loadedRepo, totalRepo);
             },
         });
     });
 });
+
+function showOrHideLoadMoreButton(a, b) {
+    if (a < b) {
+        $("#load-more").show();
+    } else {
+        $("#load-more").hide();
+    }
+}
+
+function showLoadedReposAndTotalRepos(loadedRepo, totalRepo) {
+    $("#repo").html(function () {
+        return loadedRepo + "/" + totalRepo;
+    });
+}
