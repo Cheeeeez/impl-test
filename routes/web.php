@@ -21,6 +21,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/', function () {
         return view('home.dashboard');
     })->name('home');
+    Route::get('/{id}/clone', 'RepoController@create')->name('repo.create');
 });
 
 Route::get('/login/github', 'GithubAuthController@redirectLogin');
