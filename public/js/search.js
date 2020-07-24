@@ -10,6 +10,7 @@ $(document).ready(function () {
     $("form").submit(function (e) {
         e.preventDefault();
     });
+    // Search user
     $("#search").click(function () {
         page = FIRST_PAGE;
         loadedRepo = 0;
@@ -96,7 +97,7 @@ $(document).ready(function () {
             },
         });
     });
-
+    //Load more
     $("#load-more").click(function () {
         page++;
         $.ajax({
