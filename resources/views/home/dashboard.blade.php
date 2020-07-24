@@ -112,6 +112,7 @@
                             <th scope="col">#</th>
                             <th scope="col">Repository name</th>
                             <th scope="col">Url</th>
+                            <th scope="col">Clone</th>
                         </tr>
                     </thead>
                     <tbody id="table-content"></tbody>

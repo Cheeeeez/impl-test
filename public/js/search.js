@@ -58,6 +58,7 @@ $(document).ready(function () {
                         <td><a target="_blank" href="${response[i].html_url}">${
                             response[i].html_url
                         }</a></td>
+                        <td><a class="btn btn-success">Clone</a></td>
                         </tr>`;
                     }
                     showLoadedReposAndTotalRepos(loadedRepo, totalRepo);
@@ -73,6 +74,7 @@ $(document).ready(function () {
                             <td><a target="_blank" href="${
                                 response[i].html_url
                             }">${response[i].html_url}</a></td>
+                            <td><a class="btn btn-success">Clone</a></td>
                             </tr>`;
                         }
                         showLoadedReposAndTotalRepos(loadedRepo, totalRepo);
@@ -88,6 +90,7 @@ $(document).ready(function () {
                             <td><a target="_blank" href="${
                                 response[i].html_url
                             }">${response[i].html_url}</a></td>
+                            <td><a class="btn btn-success">Clone</a></td>
                             </tr>`;
                         }
                         showLoadedReposAndTotalRepos(loadedRepo, totalRepo);
@@ -120,6 +123,7 @@ $(document).ready(function () {
                         <td><a target="_blank" href="${response[i].html_url}">${
                         response[i].html_url
                     }</a></td>
+                    <td><a class="btn btn-success">Clone</a></td>
                     </tr>`;
                 }
                 loadedRepo += response.length;
