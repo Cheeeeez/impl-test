@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Repo;
 use Illuminate\Http\Request;
 
 class RepoController extends Controller
@@ -10,5 +11,12 @@ class RepoController extends Controller
     {
         $id = $request->id;
         return view('home.clone', compact('id'));
+    }
+
+    public function store(Request $request)
+    {
+        Repo::create($request->all());
+        session()->flash('success', 'Clone successfully');
+        return redirect()->route('home');
     }
 }

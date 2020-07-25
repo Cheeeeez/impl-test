@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Repo extends Model
 {
-    protected $timestamp = false;
+    public $timestamps = false;
 
     protected $fillable = [
         'id',
