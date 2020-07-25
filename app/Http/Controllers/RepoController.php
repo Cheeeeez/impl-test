@@ -19,4 +19,10 @@ class RepoController extends Controller
         session()->flash('success', 'Clone successfully');
         return redirect()->route('home');
     }
+
+    public function index()
+    {
+        $repos = Repo::all();
+        return view('repo.list', compact('repos'));
+    }
 }

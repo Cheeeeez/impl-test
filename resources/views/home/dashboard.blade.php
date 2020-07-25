@@ -14,7 +14,7 @@
 <main>
     <div class="container-fluid mt-4">
         <div id="user-information">
-            <h1>User information:</h1>
+            <h1 class="text-primary">User information:</h1>
             <ul>
                 <li>Name: {{Auth::user()->name}}</li>
                 <li>Email: {{Auth::user()->email}}</li>
@@ -26,7 +26,7 @@
                     <th scope="col">#</th>
                     <th scope="col">Repository name</th>
                     <th scope="col">Url</th>
-                    <th scope="col">Clone</th>
+                    <th scope="col">Handle</th>
                 </tr>
             </thead>
             <tbody id="table-content"></tbody>
