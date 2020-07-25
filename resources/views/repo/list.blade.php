@@ -23,10 +23,11 @@
                 <th scope="row">{{$repo->id}}</th>
                 <td>{{$repo->name}}</td>
                 <td>{{$repo->url}}</td>
-                {{-- @if ($repo->status == 'forked')
-                <td><a></a></td>
-                @endif --}}
+                @if ($repo->status == 'forked')
+                <td><a href="{{$repo->forked_url}}" class="btn btn-success">Link</a></td>
+                @else
                 <td><a href="{{ route('repo.fork', $repo->id) }}" class="btn btn-primary">Fork</a></td>
+                @endif
             </tr>
             @endforeach
         </tbody>
