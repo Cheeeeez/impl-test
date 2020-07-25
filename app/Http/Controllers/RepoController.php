@@ -32,4 +32,15 @@ class RepoController extends Controller
         $id = $request->id;
         return view('repo.fork', compact('id'));
     }
+
+    public function update(Request $request)
+    {
+        $id = $request->id;
+        $forkedUrl = $request->forkedUrl;
+        $repo = Repo::findOrFail($id);
+        $repo->status = "forked";
+        $repo->forked_url = $forkedUrl;
+        $repo->save();
+        session()->flash('fork', "Fork repository with ID $id successfully");
+    }
 }

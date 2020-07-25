@@ -18,7 +18,7 @@ class UserService
     }
     public function redirectLoginGithub()
     {
-        return Socialite::driver(static::SERVICE)->redirect();
+        return Socialite::driver(static::SERVICE)->scopes(['read:user', 'repo'])->redirect();
     }
 
     public function createOrGetUser()

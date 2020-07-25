@@ -4,6 +4,9 @@
     @if (session('success'))
     <div class="alert alert-success">{{session('success')}}</div>
     @endif
+    @if (session('fork'))
+    <div class="alert alert-success">{{session('fork')}}</div>
+    @endif
     <h3 class="text-primary">Saved repositories:</h3>
     <table class="table">
         <thead class="thead-light">
@@ -20,6 +23,9 @@
                 <th scope="row">{{$repo->id}}</th>
                 <td>{{$repo->name}}</td>
                 <td>{{$repo->url}}</td>
+                {{-- @if ($repo->status == 'forked')
+                <td><a></a></td>
+                @endif --}}
                 <td><a href="{{ route('repo.fork', $repo->id) }}" class="btn btn-primary">Fork</a></td>
             </tr>
             @endforeach
