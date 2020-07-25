@@ -7,7 +7,7 @@ $("#table").hide();
 $("#load-more").hide();
 let table = document.getElementById("table-content");
 $(document).ready(function () {
-    $("form").submit(function (e) {
+    $("#search-form").submit(function (e) {
         e.preventDefault();
     });
     // Search user
@@ -58,6 +58,9 @@ $(document).ready(function () {
                         <td><a target="_blank" href="${response[i].html_url}">${
                             response[i].html_url
                         }</a></td>
+                        <td><a href="/${
+                            response[i].id
+                        }/details" class="btn btn-success">Clone</a></td>
                         </tr>`;
                     }
                     showLoadedReposAndTotalRepos(loadedRepo, totalRepo);
@@ -73,6 +76,9 @@ $(document).ready(function () {
                             <td><a target="_blank" href="${
                                 response[i].html_url
                             }">${response[i].html_url}</a></td>
+                            <td><a href="/${
+                                response[i].id
+                            }/details" class="btn btn-success">Clone</a></td>
                             </tr>`;
                         }
                         showLoadedReposAndTotalRepos(loadedRepo, totalRepo);
@@ -88,6 +94,8 @@ $(document).ready(function () {
                             <td><a target="_blank" href="${
                                 response[i].html_url
                             }">${response[i].html_url}</a></td>
+                            <td><a href="/${response[i].id}/details
+                            " class="btn btn-success">Clone</a></td>
                             </tr>`;
                         }
                         showLoadedReposAndTotalRepos(loadedRepo, totalRepo);
@@ -120,6 +128,8 @@ $(document).ready(function () {
                         <td><a target="_blank" href="${response[i].html_url}">${
                         response[i].html_url
                     }</a></td>
+                    <td><a href="/${response[i].id}/details
+                    " class="btn btn-success">Clone</a></td>
                     </tr>`;
                 }
                 loadedRepo += response.length;
