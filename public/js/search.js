@@ -19,7 +19,7 @@ $(document).ready(function () {
             url:
                 "https://api.github.com/users/" +
                 $("#keyword").val() +
-                "/repos?sort=created&direction=asc;per_page=100",
+                "/repos?sort=created&direction=asc;",
             dataType: "JSON",
             success: function (response, textStatus, xhr) {
                 totalRepo = response.length;
@@ -42,67 +42,33 @@ $(document).ready(function () {
                         url: lastPageUrl,
                         dataType: "JSON",
                         success: function (result) {
-                            totalRepo = 100 * (lastPage - 1) + result.length;
+                            totalRepo =
+                                MAX_REPO_PER_PAGE * (lastPage - 1) +
+                                result.length;
                             localStorage.setItem("repo", totalRepo);
                         },
                     });
                     totalRepo = localStorage.getItem("repo");
                     localStorage.clear();
-                    loadedRepo = MAX_REPO_PER_PAGE;
-                    for (let i = 0; i < MAX_REPO_PER_PAGE; i++) {
-                        table.innerHTML += `<tr>
-                        <td>${i + 1}</td>
-                        <td>${response[i].name} (${
-                            response[i].stargazers_count
-                        }<i class="fas fa-star"></i>)</td>
-                        <td><a target="_blank" href="${response[i].html_url}">${
-                            response[i].html_url
-                        }</a></td>
-                        <td><a href="/${
-                            response[i].id
-                        }/details" class="btn btn-success">Clone</a></td>
-                        </tr>`;
-                    }
-                    showLoadedReposAndTotalRepos(loadedRepo, totalRepo);
-                } else {
-                    if (response.length <= MAX_REPO_PER_PAGE) {
-                        loadedRepo = response.length;
-                        for (let i = 0; i < response.length; i++) {
-                            table.innerHTML += `<tr>
-                            <td>${i + 1}</td>
-                            <td>${response[i].name} (${
-                                response[i].stargazers_count
-                            }<i class="fas fa-star"></i>)</td>
-                            <td><a target="_blank" href="${
-                                response[i].html_url
-                            }">${response[i].html_url}</a></td>
-                            <td><a href="/${
-                                response[i].id
-                            }/details" class="btn btn-success">Clone</a></td>
-                            </tr>`;
-                        }
-                        showLoadedReposAndTotalRepos(loadedRepo, totalRepo);
-                    } else {
-                        totalRepo = response.length;
-                        loadedRepo = MAX_REPO_PER_PAGE;
-                        for (let i = 0; i < MAX_REPO_PER_PAGE; i++) {
-                            table.innerHTML += `<tr>
-                            <td>${i + 1}</td>
-                            <td>${response[i].name} (${
-                                response[i].stargazers_count
-                            }<i class="fas fa-star"></i>)</td>
-                            <td><a target="_blank" href="${
-                                response[i].html_url
-                            }">${response[i].html_url}</a></td>
-                            <td><a href="/${response[i].id}/details
-                            " class="btn btn-success">Clone</a></td>
-                            </tr>`;
-                        }
-                        showLoadedReposAndTotalRepos(loadedRepo, totalRepo);
-                    }
                 }
-                showOrHideLoadMoreButton(loadedRepo, totalRepo);
+                loadedRepo = response.length;
+                for (let i = 0; i < response.length; i++) {
+                    table.innerHTML += `<tr>
+                    <td>${i + 1}</td>
+                    <td>${response[i].name} (${
+                        response[i].stargazers_count
+                    }<i class="fas fa-star"></i>)</td>
+                    <td><a target="_blank" href="${response[i].html_url}">${
+                        response[i].html_url
+                    }</a></td>
+                    <td><a href="/${
+                        response[i].id
+                    }/details" class="btn btn-success">Clone</a></td>
+                    </tr>`;
+                    }
+                showLoadedReposAndTotalRepos(loadedRepo, totalRepo);
             },
+            showOrHideLoadMoreButton(loadedRepo, totalRepo);
         });
     });
     //Load more
