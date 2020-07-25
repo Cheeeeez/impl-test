@@ -1,6 +1,6 @@
 @extends('home.master')
 @section('search')
-<form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
+<form class="d-none d-md-inline-block form-inline ml-2 mr-auto mr-md-3 my-2 my-md-0">
     <div class="input-group">
         <input class="form-control" type="text" id="keyword" placeholder="Search for..." aria-label="Search"
             aria-describedby="basic-addon2" />
