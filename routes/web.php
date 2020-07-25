@@ -13,6 +13,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/login', function () {
+    return view('login');
+})->name('login');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/', function () {
+        return view('home.dashboard');
+    })->name('home');
+    Route::get('/{id}/details', 'RepoController@create')->name('repo.create');
+    Route::post('/clone', 'RepoController@store')->name('repo.store');
+    Route::get('/repo-list', 'RepoController@index')->name('repo.index');
+    Route::get('/{id}/fork', 'RepoController@fork')->name('repo.fork');
+    Route::post('/{id}/update', 'RepoController@update')->name('repo.update');
 });
+
+Route::get('/login/github', 'GithubAuthController@redirectLogin');
+Route::get('/callback/github', 'GithubAuthController@handleCallback');
+Route::get('/logout', 'GithubAuthController@logout')->name('logout');
