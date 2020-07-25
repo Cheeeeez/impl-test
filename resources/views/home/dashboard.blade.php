@@ -1,4 +1,15 @@
 @extends('home.master')
+@section('search')
+<form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
+    <div class="input-group">
+        <input class="form-control" type="text" id="keyword" placeholder="Search for..." aria-label="Search"
+            aria-describedby="basic-addon2" />
+        <div class="input-group-append">
+            <button class="btn btn-primary" id="search" type="button"><i class="fas fa-search"></i></button>
+        </div>
+    </div>
+</form>
+@endsection
 @section('slide-content')
 <main>
     <div class="container-fluid mt-4">
