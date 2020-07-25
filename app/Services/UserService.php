@@ -30,9 +30,13 @@ class UserService
             $userDB->name = $user->getNickname();
             $userDB->email = $user->getEmail();
             $userDB->avatar = $user->getAvatar();
+            $userDB->token = $user->token;
             if (!$userDB->save()) {
                 throw new \Exception('Create user failed due to DB Error...');
             }
+        } else {
+            $userDB->token = $user->token;
+            $this->userRepository->store($userDB);
         }
         Auth::loginUsingId($userDB->id);
     }

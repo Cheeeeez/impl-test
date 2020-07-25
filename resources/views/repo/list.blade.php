@@ -20,7 +20,7 @@
                 <th scope="row">{{$repo->id}}</th>
                 <td>{{$repo->name}}</td>
                 <td>{{$repo->url}}</td>
-                <td><button class="btn btn-primary">Fork</button></td>
+                <td><a href="{{ route('repo.fork', $repo->id) }}" class="btn btn-primary">Fork</a></td>
             </tr>
             @endforeach
         </tbody>

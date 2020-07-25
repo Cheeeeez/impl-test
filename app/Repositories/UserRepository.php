@@ -17,4 +17,9 @@ class UserRepository
     {
         return $this->user->where('email', $email)->first();
     }
+
+    public function store($user)
+    {
+        $user->save();
+    }
 }
