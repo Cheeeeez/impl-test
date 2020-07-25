@@ -1,9 +1,11 @@
 @extends('home.master')
 @section('slide-content')
 <input type="hidden" value="{{$id}}" id="id">
+<input type="hidden" value="{{Auth::user()->token}}" id="token">
 @endsection
 @section('script')
 <script>
+    let token1 = $("#token").val();
     $(document).ready(function() {
         $.ajax({
             type: "GET",
@@ -12,11 +14,11 @@
             success: function (response) {
                 console.log(response)
                 $.ajax({
-                    type: "POST",
-                    url: response.forks_url,
-                    // dataType: "dataType",
+                    type: "GET",
+                    url: "https://github.com/login/oauth/authorize",
+                    dataType: "JSON",
                     success: function (result) {
-                        console.result
+                        console.log(result)
                     }
                 });
             }
