@@ -11,9 +11,6 @@
                 aria-haspopup="true" aria-expanded="false"><img src="{{Auth::user()->avatar}}" width="50px"
                     style="border-radius: 50%" alt="Avatar"></a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="#">Settings</a>
-                <a class="dropdown-item" href="#">Activity Log</a>
-                <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="{{ route('logout') }}">Logout</a>
             </div>
         </li>
