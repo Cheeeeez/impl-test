@@ -1,6 +1,9 @@
 @extends('home.master')
 @section('slide-content')
 <div class="container-fluid mt-3">
+    @if (session('success'))
+    <div class="alert alert-success">{{session('success')}}</div>
+    @endif
     <h3 class="text-primary">Saved repositories:</h3>
     <table class="table">
         <thead class="thead-light">

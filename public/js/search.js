@@ -7,7 +7,7 @@ $("#table").hide();
 $("#load-more").hide();
 let table = document.getElementById("table-content");
 $(document).ready(function () {
-    $("form").submit(function (e) {
+    $("#search-form").submit(function (e) {
         e.preventDefault();
     });
     // Search user
