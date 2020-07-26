@@ -6,8 +6,6 @@ use App\Jobs\ForkRepo;
 use App\Repo;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use function GuzzleHttp\json_decode;
 
 class RepoController extends Controller
 {
@@ -34,10 +32,10 @@ class RepoController extends Controller
     public function fork(Request $request)
     {
         $id = $request->id;
-        $token = Auth::user()->token;
         $repo = Repo::findOrFail($id);
-        $job = (new ForkRepo($id, $token, $repo))->delay(60);
+        $job = (new ForkRepo($repo))->delay(60);
         $this->dispatch($job);
+        session()->flash('success', "Fork repository with ID $id successfully");
         return redirect()->route('repo.index');
     }
 }

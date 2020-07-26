@@ -26,7 +26,8 @@
                 @if ($repo->status == 'forked')
                 <td><a href="{{$repo->forked_url}}" class="btn btn-success">Link</a></td>
                 @else
-                <td><a href="{{ route('repo.fork', $repo->id) }}" class="btn btn-primary">Fork</a></td>
+                <td><a href="{{ route('repo.fork', [$repo->id,'token' => Auth::user()->token]) }}"
+                        class="btn btn-primary">Fork</a></td>
                 @endif
             </tr>
             @endforeach
