@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ForkRepo;
 use App\Repo;
-use GuzzleHttp\Client;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Http;
-
 use function GuzzleHttp\json_decode;
 
 class RepoController extends Controller
@@ -36,23 +35,9 @@ class RepoController extends Controller
     {
         $id = $request->id;
         $token = Auth::user()->token;
-        $response = Http::get('https://api.github.com/repositories/' . $id);
-        $forksUrl = $response->json()['forks_url'];
-        $client = new Client();
-        $forkResponse = $client->request('POST', $forksUrl, ['headers' => ['Authorization' => "token $token"]]);
-        $results = (json_decode($forkResponse->getBody()->getContents()));
-        $forkedUrl = $results->html_url;
-        $this->update($id, $forkedUrl);
-    }
-
-    public function update($id, $url)
-    {
-        $forkedUrl = $url;
         $repo = Repo::findOrFail($id);
-        $repo->status = "forked";
-        $repo->forked_url = $forkedUrl;
-        $repo->save();
-        session()->flash('fork', "Fork repository with ID $id successfully");
+        $job = (new ForkRepo($id, $token, $repo))->delay(60);
+        $this->dispatch($job);
         return redirect()->route('repo.index');
     }
 }
