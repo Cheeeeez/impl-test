@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ForkRepo;
 use App\Repo;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class RepoController extends Controller
@@ -30,17 +32,10 @@ class RepoController extends Controller
     public function fork(Request $request)
     {
         $id = $request->id;
-        return view('repo.fork', compact('id'));
-    }
-
-    public function update(Request $request)
-    {
-        $id = $request->id;
-        $forkedUrl = $request->forkedUrl;
         $repo = Repo::findOrFail($id);
-        $repo->status = "forked";
-        $repo->forked_url = $forkedUrl;
-        $repo->save();
-        session()->flash('fork', "Fork repository with ID $id successfully");
+        $job = (new ForkRepo($repo))->delay(60);
+        $this->dispatch($job);
+        session()->flash('success', "Fork repository with ID $id successfully");
+        return redirect()->route('repo.index');
     }
 }
